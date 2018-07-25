@@ -1,6 +1,15 @@
 
+CREATE EXTENSION pgcrypto;
+
 CREATE TABLE IF NOT EXISTS img(
-  id SERIAL PRIMARY KEY,
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name VARCHAR(200) NOT NULL,
   path VARCHAR(200) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS n_user(
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  password VARCHAR(200),
+  name VARCHAR(200),
+  email VARCHAR(200)
 );
