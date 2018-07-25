@@ -4,6 +4,7 @@ import com.mediatype.examplework.model.Image;
 import com.mediatype.examplework.repository.ImageRepository;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -32,8 +33,17 @@ public class ImageController extends BaseController{
 
         return ResponseEntity.ok()
                 .contentLength(file.length())
-                .contentType(MediaType.parseMediaType("image/jpeg"))
+                .contentType(MediaType.parseMediaType(MediaType.IMAGE_JPEG_VALUE))
                 .body(resource);
+    }
+
+    @GetMapping(path = "/load", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public ResponseEntity getImage() throws IOException {
+        File file = new File("images/lake.jpg");
+        FileInputStream fileInputStream = new FileInputStream(file);
+        byte[] bytes = new byte[(int)file.length()];
+        fileInputStream.read(bytes);
+        return new ResponseEntity(bytes, HttpStatus.OK);
     }
 
 
@@ -46,7 +56,7 @@ public class ImageController extends BaseController{
 
         return ResponseEntity.ok()
                 .contentLength(file.length())
-                .contentType(MediaType.parseMediaType("application/octet-stream"))
+                .contentType(MediaType.parseMediaType(MediaType.APPLICATION_OCTET_STREAM_VALUE))
                 .body(resource);
     }
 
