@@ -1,77 +1,66 @@
-package com.mediatype.examplework.controller;
 
+package com.mediatype.examplework.controller;
 import com.mediatype.examplework.model.Image;
-import com.mediatype.examplework.repository.ImageRepository;
+import com.mediatype.examplework.model.User;
+import com.mediatype.examplework.service.ImageServiceImpl;
+import com.mediatype.examplework.service.UserServiceImpl;
 import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.*;
 
 @Controller
 @RequestMapping(value = "/image")
-public class ImageController extends BaseController{
+public class ImageController {
 
-    private ImageRepository imageRepository;
 
-    public ImageController(ImageRepository imageRepository){
-        this.imageRepository = imageRepository;
-        super.setJpaRepository(imageRepository);
+    private ImageServiceImpl imageService;
+
+    public ImageController(ImageServiceImpl imageService, UserServiceImpl userService){
+        this.imageService = imageService;
     }
 
-    @RequestMapping(path = "/get", method = RequestMethod.GET)
-    public ResponseEntity<Resource> get(String param) throws IOException {
+    @PostMapping(value = "/upload")
+    @Transactional
+    public ResponseEntity<String> uploadImage(@RequestParam MultipartFile file){
 
-        File file = new File("images/lake.jpg");
-        FileInputStream fileInputStream = new FileInputStream(file);
-        InputStreamResource resource = new InputStreamResource(fileInputStream);
+        if(!imageService.saveEntity(imageService.convertMultipartFileToImage(file)))
+            return new ResponseEntity("Cannot upload file", HttpStatus.INTERNAL_SERVER_ERROR);
 
-        return ResponseEntity.ok()
-                .contentLength(file.length())
-                .contentType(MediaType.parseMediaType(MediaType.IMAGE_JPEG_VALUE))
-                .body(resource);
+        imageService.uploadImageToFolder(file);
+
+        return new ResponseEntity("File successfully uploaded", HttpStatus.CREATED);
     }
 
-    @GetMapping(path = "/load", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public ResponseEntity getImage() throws IOException {
-        File file = new File("images/lake.jpg");
-        FileInputStream fileInputStream = new FileInputStream(file);
-        byte[] bytes = new byte[(int)file.length()];
-        fileInputStream.read(bytes);
-        return new ResponseEntity(bytes, HttpStatus.OK);
+    @PostMapping(value = "/upload/for_user")
+    public ResponseEntity<String> uploadImageForUser(@RequestParam("file") MultipartFile file,
+                                                     @RequestParam("email") String email){
+
+        imageService.saveImageForUser(email, file);
+
+        return new ResponseEntity<>("File successfully uploaded", HttpStatus.CREATED);
     }
 
+    @GetMapping(value = "/get/{name}")
+    public ResponseEntity<InputStreamResource> getImageByName(@PathVariable String name){
 
-    @RequestMapping(path = "/download", method = RequestMethod.GET)
-    public ResponseEntity<Resource> download(String param) throws IOException {
+        return ResponseEntity.status(HttpStatus.OK)
+                .contentType(MediaType.IMAGE_JPEG)
+                .body(imageService.getImageStreamResource(name));
 
-        File file = new File("images/lake.jpg");
-        FileInputStream fileInputStream = new FileInputStream(file);
-        InputStreamResource resource = new InputStreamResource(fileInputStream);
-
-        return ResponseEntity.ok()
-                .contentLength(file.length())
-                .contentType(MediaType.parseMediaType(MediaType.APPLICATION_OCTET_STREAM_VALUE))
-                .body(resource);
     }
 
-    @PostMapping(value = "/upload", produces = "image/jpeg")
-    public void uploadFile(@RequestParam("image") MultipartFile file,
-                           @RequestParam("name") String name,
-                           @RequestParam("email") String email) throws IOException {
-        Image image = new Image();
-        image.setName(file.getOriginalFilename());
-        image.setPath("images/");
-        imageRepository.save(image);
-        byte[] bytes = file.getBytes();
-        FileOutputStream fileOutputStream = new FileOutputStream("images/" + file.getOriginalFilename());
-        fileOutputStream.write(bytes);
-    }
+    @GetMapping(value = "/download/{name}")
+    public ResponseEntity<InputStreamResource> downloadImageByName(@PathVariable String name){
 
+        return ResponseEntity.status(HttpStatus.OK)
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(imageService.getImageStreamResource(name));
+    }
 
 }

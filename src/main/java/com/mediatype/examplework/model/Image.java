@@ -6,23 +6,24 @@ import javax.persistence.*;
 @Table(name = "img")
 public class Image extends BaseModel{
 
-    private String name;
-
     private String path;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public String getPath() {
         return path;
     }
-
     public void setPath(String path) {
         this.path = path;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }
