@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 @Service
 public class ImageServiceImpl extends BaseServiceImpl<Image> implements ImageService{
@@ -31,16 +33,15 @@ public class ImageServiceImpl extends BaseServiceImpl<Image> implements ImageSer
     }
 
     @Override
-    public void uploadImageToFolder(MultipartFile file) {
+    public void uploadImageToFolder(MultipartFile file) { //TODO  SAVE FILE
 
         try {
-
-            byte[] buffer = file.getBytes();
-            FileOutputStream uploadFile = new FileOutputStream("images/" + file.getOriginalFilename());
-            uploadFile.write(buffer);
-
+//            byte[] buffer = file.getBytes();
+//            FileOutputStream uploadFile = new FileOutputStream("images/" + file.getOriginalFilename());
+            Files.copy(file.getInputStream(), Paths.get("images/" + file.getOriginalFilename()));
+//            uploadFile.write(buffer);
         } catch (IOException e) {
-            e.printStackTrace();
+            e.printStackTrace(); // FIXME The application must stoped to process request you need to throw new Exception
         }
 
     }

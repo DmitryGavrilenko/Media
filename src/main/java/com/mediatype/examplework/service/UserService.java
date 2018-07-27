@@ -3,7 +3,7 @@ package com.mediatype.examplework.service;
 import com.mediatype.examplework.model.Image;
 import com.mediatype.examplework.model.User;
 
-public interface UserService{
+public interface UserService extends BaseService<User>{
 
     User findUserByEmail(String email);
 

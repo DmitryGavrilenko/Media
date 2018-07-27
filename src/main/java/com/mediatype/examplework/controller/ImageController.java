@@ -1,7 +1,5 @@
 
 package com.mediatype.examplework.controller;
-import com.mediatype.examplework.model.Image;
-import com.mediatype.examplework.model.User;
 import com.mediatype.examplework.service.ImageServiceImpl;
 import com.mediatype.examplework.service.UserServiceImpl;
 import org.springframework.core.io.InputStreamResource;
@@ -30,15 +28,15 @@ public class ImageController {
     public ResponseEntity<String> uploadImage(@RequestParam MultipartFile file){
 
         if(!imageService.saveEntity(imageService.convertMultipartFileToImage(file)))
-            return new ResponseEntity("Cannot upload file", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Cannot upload file", HttpStatus.INTERNAL_SERVER_ERROR);
 
         imageService.uploadImageToFolder(file);
 
-        return new ResponseEntity("File successfully uploaded", HttpStatus.CREATED);
+        return new ResponseEntity<>("File successfully uploaded", HttpStatus.CREATED);
     }
 
     @PostMapping(value = "/upload/for_user")
-    public ResponseEntity<String> uploadImageForUser(@RequestParam("file") MultipartFile file,
+    public ResponseEntity<String> uploadImageForUser(@RequestParam("file") MultipartFile file, //TODO You must to process form-data
                                                      @RequestParam("email") String email){
 
         imageService.saveImageForUser(email, file);

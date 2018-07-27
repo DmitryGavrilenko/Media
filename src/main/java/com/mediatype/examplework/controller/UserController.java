@@ -10,7 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
+/*TODO PLEASE CHANGE ALL RESPONSES TO OBJECTS (NOT STRINGS ), MODEL MAPPER
+* FIXME PLEASE ADD CONTROLLER ADVICE  FOR INTERCEPT EXCEPTIONS AND PROVIDE RESPONSES WITHOUT STACK TRACES */
 @Controller
 @RequestMapping(value = "/user")
 public class UserController {
@@ -25,12 +26,12 @@ public class UserController {
 
     @PostMapping(value = "/save/form")
     @Transactional
-    public ResponseEntity<String> saveUserForm(@RequestParam(value = "file",required = false) MultipartFile file,
+    public ResponseEntity<String> saveUserForm(@RequestParam(value = "file",required = false) MultipartFile file, // TODO CHANGE AS FORM - DATA (DTO OBJECT FOR VALIDATION)
                                        @RequestParam("name") String name,
                                        @RequestParam("password") String password,
                                        @RequestParam("email") String email){
 
-        if(file == null){
+        if(file == null){ // FIXME  ALL SUCH VALIDATION MUST BE DONE INSIDE SERVICE LAYER
             User user =  userService.convertToUser(name, password, email, null);
             saveUser(user);
             return new ResponseEntity<>("User with name " + name + ", successfully created",HttpStatus.CREATED);
