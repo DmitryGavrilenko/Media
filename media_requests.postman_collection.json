@@ -1,0 +1,216 @@
+{
+	"info": {
+		"_postman_id": "4e344b6f-0e98-4c06-a4b7-96b417c6a612",
+		"name": "media_requests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:8009/image/upload/",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"description": "",
+							"type": "file"
+						},
+						{
+							"key": "email",
+							"value": "testemal",
+							"description": "",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8009/image/upload/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8009",
+					"path": [
+						"image",
+						"upload",
+						""
+					]
+				},
+				"description": "upload image"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8009/user/save/form",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"description": "",
+							"type": "file"
+						},
+						{
+							"key": "name ",
+							"value": "testname",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "testemal",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "1234567",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8009/user/save/form",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8009",
+					"path": [
+						"user",
+						"save",
+						"form"
+					]
+				},
+				"description": "save user from form"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8009/img/get/lake.jpeg",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8009/img/get/lake.jpeg",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8009",
+					"path": [
+						"img",
+						"get",
+						"lake.jpeg"
+					]
+				},
+				"description": "get image by name\n"
+			},
+			"response": []
+		},
+		{
+			"name": "{{url}}/user/save/by",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"sdjfi\",\n\t\"password\": \"sahfhb\",\n\t\"email\": \"kdjslkdf\"\n}"
+				},
+				"url": {
+					"raw": "{{url}}/user/save/by",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"user",
+						"save",
+						"by"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8009/user/save/by",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"Dmitry\",\n\t\"password\": \"1234567\",\n\t\"email\": \"gavrilenko@gmail.com\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8009/user/save/by",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8009",
+					"path": [
+						"user",
+						"save",
+						"by"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8009/user/save/image",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"description": "",
+							"type": "file"
+						},
+						{
+							"key": "email",
+							"value": "gavrilenko@gmail.com",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8009/user/save/image",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8009",
+					"path": [
+						"user",
+						"save",
+						"image"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
