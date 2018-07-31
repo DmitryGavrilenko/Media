@@ -1,14 +1,14 @@
 package com.mediatype.examplework.service;
 
-import com.mediatype.examplework.model.Image;
+import com.mediatype.examplework.dto.UserDTO;
 import com.mediatype.examplework.model.User;
 
-public interface UserService extends BaseService<User>{
+public interface UserService{
 
     User findUserByEmail(String email);
 
-    boolean saveUserForm(String name, String password, String email, Image image);
+    boolean saveUserForm(UserDTO userDTO);
 
-    User convertToUser(String name, String password, String email, Image image);
+    boolean saveImageForUser(UserDTO userDTO);
 
 }

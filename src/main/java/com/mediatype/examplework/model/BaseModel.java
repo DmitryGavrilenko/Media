@@ -15,6 +15,9 @@ public class BaseModel {
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;
 
+    public BaseModel() {
+    }
+
     public UUID getId() {
         return id;
     }

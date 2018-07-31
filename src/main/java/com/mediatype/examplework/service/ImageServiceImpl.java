@@ -1,51 +1,59 @@
 package com.mediatype.examplework.service;
 
 import com.mediatype.examplework.dao.ImageRepository;
+import com.mediatype.examplework.dto.UserDTO;
+import com.mediatype.examplework.exception.FileExistsException;
+import com.mediatype.examplework.exception.NotFoundException;
+import com.mediatype.examplework.exception.SaveFileException;
+import com.mediatype.examplework.message.ImageMessage;
 import com.mediatype.examplework.model.Image;
-import com.mediatype.examplework.model.User;
+import org.modelmapper.ModelMapper;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
 @Service
 public class ImageServiceImpl extends BaseServiceImpl<Image> implements ImageService{
 
+
+    private ModelMapper modelMapper;
+
     private ImageRepository imageRepository;
 
-    private UserServiceImpl userService;
-
-    public ImageServiceImpl(ImageRepository imageRepository, UserServiceImpl userService){
+    public ImageServiceImpl(ImageRepository imageRepository, ModelMapper modelMapper){
+        this.modelMapper = modelMapper;
         this.imageRepository = imageRepository;
-        this.userService = userService;
         super.setJpaRepository(imageRepository);
     }
 
-    @Override
-    public Image convertMultipartFileToImage(MultipartFile file) {
-        Image image = new Image();
-        image.setPath("images/" + file.getOriginalFilename());
-
-        return image;
-    }
-
-    @Override
-    public void uploadImageToFolder(MultipartFile file) { //TODO  SAVE FILE
+    public void saveImage(MultipartFile file) {
 
         try {
-//            byte[] buffer = file.getBytes();
-//            FileOutputStream uploadFile = new FileOutputStream("images/" + file.getOriginalFilename());
             Files.copy(file.getInputStream(), Paths.get("images/" + file.getOriginalFilename()));
-//            uploadFile.write(buffer);
-        } catch (IOException e) {
-            e.printStackTrace(); // FIXME The application must stoped to process request you need to throw new Exception
+        }catch(FileAlreadyExistsException e){
+            throw new FileExistsException(ImageMessage.FILE_ALREADY_EXISTS.getMessage(), HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST.toString());
+        }catch (IOException e) {
+            imageRepository.delete(imageRepository.findByPath("images/" + file));
+            throw new SaveFileException(ImageMessage.FAILED_SAVE_FILE.getMessage()
+                    , HttpStatus.INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR.toString());
         }
 
     }
 
+    @Override
+    public void saveImage(UserDTO userDTO) {
+
+        Image image = modelMapper.map(userDTO, Image.class);
+        imageRepository.save(image);
+        saveImage(userDTO.getFile());
+
+    }
 
     @Override
     public InputStreamResource getImageStreamResource(String name) {
@@ -57,26 +65,12 @@ public class ImageServiceImpl extends BaseServiceImpl<Image> implements ImageSer
             FileInputStream fileInputStream = new FileInputStream(file);
             image = new InputStreamResource(fileInputStream);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            throw new NotFoundException(ImageMessage.NOT_FOUND.getMessage()
+                    , HttpStatus.NOT_FOUND, HttpStatus.NOT_FOUND.toString());
         }
 
         return image;
     }
 
-    @Override
-    public boolean saveImageForUser(String email, MultipartFile file) {
-
-        User user = userService.findUserByEmail(email);
-
-        Image image = convertMultipartFileToImage(file);
-
-        user.getImages().add(image);
-
-        saveEntity(image);
-
-        uploadImageToFolder(file);
-
-        return true;
-    }
 
 }

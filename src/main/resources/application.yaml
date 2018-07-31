@@ -1,7 +1,5 @@
 spring:
   datasource:
-    username: victor
-    password: 123456
     url: jdbc:postgresql://localhost:5432/images
     driver-class-name: org.postgresql.Driver
   jpa:
@@ -11,5 +9,20 @@ spring:
       hibernate:
         jdbc:
           lob.non_contextual_creation: true
+  profiles:
+    active: working
 server:
   port: 8009
+---
+spring:
+  profiles: verification
+  datasource:
+    username: viktor
+    password: 123456
+
+---
+ spring:
+  profiles: working
+  datasource:
+    username: postgres
+    password: root

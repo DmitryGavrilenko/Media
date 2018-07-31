@@ -2,7 +2,7 @@ package com.mediatype.examplework.service;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public class BaseServiceImpl<E> implements BaseService<E> {
+public class BaseServiceImpl<E> {
 
     private JpaRepository jpaRepository;
 
@@ -10,7 +10,6 @@ public class BaseServiceImpl<E> implements BaseService<E> {
         this.jpaRepository = jpaRepository;
     }
 
-    @Override
     public boolean saveEntity(E entity) {
 
         jpaRepository.save(entity);

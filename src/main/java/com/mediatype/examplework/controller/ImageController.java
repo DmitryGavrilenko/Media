@@ -1,7 +1,9 @@
 
 package com.mediatype.examplework.controller;
+import com.mediatype.examplework.dto.UserDTO;
+import com.mediatype.examplework.message.ImageMessage;
+import com.mediatype.examplework.response.Response;
 import com.mediatype.examplework.service.ImageServiceImpl;
-import com.mediatype.examplework.service.UserServiceImpl;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -9,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 
 @Controller
@@ -19,29 +20,18 @@ public class ImageController {
 
     private ImageServiceImpl imageService;
 
-    public ImageController(ImageServiceImpl imageService, UserServiceImpl userService){
+    public ImageController(ImageServiceImpl imageService){
         this.imageService = imageService;
     }
 
     @PostMapping(value = "/upload")
     @Transactional
-    public ResponseEntity<String> uploadImage(@RequestParam MultipartFile file){
+    public ResponseEntity<Response> uploadImage(UserDTO userDTO){
 
-        if(!imageService.saveEntity(imageService.convertMultipartFileToImage(file)))
-            return new ResponseEntity<>("Cannot upload file", HttpStatus.INTERNAL_SERVER_ERROR);
+        imageService.saveImage(userDTO);
 
-        imageService.uploadImageToFolder(file);
-
-        return new ResponseEntity<>("File successfully uploaded", HttpStatus.CREATED);
-    }
-
-    @PostMapping(value = "/upload/for_user")
-    public ResponseEntity<String> uploadImageForUser(@RequestParam("file") MultipartFile file, //TODO You must to process form-data
-                                                     @RequestParam("email") String email){
-
-        imageService.saveImageForUser(email, file);
-
-        return new ResponseEntity<>("File successfully uploaded", HttpStatus.CREATED);
+        return new ResponseEntity<>(new Response(ImageMessage.SUCCESS_UPLOAD.getMessage()
+                , HttpStatus.CREATED, HttpStatus.CREATED.toString()), HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/get/{name}")

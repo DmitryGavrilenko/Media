@@ -1,17 +1,16 @@
 package com.mediatype.examplework.service;
 
-import com.mediatype.examplework.model.Image;
+import com.mediatype.examplework.dto.UserDTO;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.web.multipart.MultipartFile;
 
-public interface ImageService extends BaseService<Image> {
+public interface ImageService {
 
-    Image convertMultipartFileToImage(MultipartFile file);
+    void saveImage(MultipartFile file);
 
-    void uploadImageToFolder(MultipartFile file);
+    void saveImage(UserDTO userDTODTO);
 
     InputStreamResource getImageStreamResource(String name);
 
-    boolean saveImageForUser(String email, MultipartFile file);
 
 }

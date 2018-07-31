@@ -18,9 +18,11 @@ public class User extends BaseModel{
     private String email;
 
     @LazyCollection(LazyCollectionOption.TRUE)
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<Image> images = new ArrayList<>();
+
+    public User() {
+    }
 
     public List<Image> getImages() {
         return images;
