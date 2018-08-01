@@ -13,6 +13,9 @@ public class Image extends BaseModel{
 
     public Image() {
     }
+    public Image(String path) {
+        this.path = path;
+    }
 
     public User getUser() {
         return user;
