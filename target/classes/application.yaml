@@ -5,8 +5,8 @@ spring:
     hikari:
       maximum-pool-size: 8
   jpa:
-    show-sql: true
-    database-platform: org.hibernate.dialect.PostgreSQL94Dialect
+#    show-sql: true
+    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
     properties:
       hibernate:
         jdbc:
@@ -28,3 +28,9 @@ spring:
   datasource:
     username: postgres
     password: root
+---
+  spring:
+    profiles: den
+    datasource:
+      username: postgres
+      password: postgres
