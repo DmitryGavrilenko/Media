@@ -53,7 +53,6 @@ public class Starter implements CommandLineRunner {
 
         long timeStart = System.currentTimeMillis();
 
-        timeStart = System.currentTimeMillis();
         for (int i = 0; i < 8; i++){
             executorService.submit(() -> {
                 AtomicLong count = new AtomicLong();
@@ -64,11 +63,10 @@ public class Starter implements CommandLineRunner {
                     synchronized(images){
                     if (count.get()%10_000 == 0 || count.get() == 125_000){
 
-                            imageRepository.saveAll(images);
-                            images.clear();
+                        save(images);
+
                         }
                     }
-
                 }
             });
         }
@@ -77,9 +75,12 @@ public class Starter implements CommandLineRunner {
         time = System.currentTimeMillis() - timeStart;
         System.out.println("Time : " + time + "ms" );
 
+    }
 
-
-
+    @Transactional
+    public void save(ConcurrentLinkedQueue<Image> images){
+        imageRepository.saveAll(images);
+        images.clear();
     }
     public static void main(String[] args){
         SpringApplication.run(Starter.class, args);
