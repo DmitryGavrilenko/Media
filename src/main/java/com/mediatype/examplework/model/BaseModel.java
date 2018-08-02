@@ -8,11 +8,12 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @MappedSuperclass
-public class BaseModel {
+public class BaseModel implements Serializable {
 
     @Id
     @GeneratedValue(generator = "UUID")

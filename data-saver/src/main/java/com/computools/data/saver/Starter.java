@@ -4,6 +4,7 @@ import com.mediatype.examplework.ExampleWorkApplication;
 import com.mediatype.examplework.dao.ImageRepository;
 import com.mediatype.examplework.model.Image;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -22,6 +23,7 @@ import java.util.concurrent.atomic.AtomicLong;
 @Import(ExampleWorkApplication.class)
 public class Starter implements CommandLineRunner {
 
+
     private ImageRepository imageRepository;
 
     private AtomicLong count;
@@ -35,6 +37,7 @@ public class Starter implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
+        long time1;
         count = new AtomicLong();
         int poolSize = Runtime.getRuntime().availableProcessors()*2;
         ExecutorService executorService = Executors.newFixedThreadPool(poolSize);
@@ -43,7 +46,7 @@ public class Starter implements CommandLineRunner {
         long timeStart = System.currentTimeMillis();
         for (int i = 0; i < 8; i++){
             executorService.submit(() -> {
-                for(int c = 0; c < 125_000; c++) {
+                for(int c = 0; c < 5_000; c++) {
                     imageRepository.save(new Image("www"));
                     count.incrementAndGet();
                 }
@@ -52,8 +55,12 @@ public class Starter implements CommandLineRunner {
         }
 
         while(!executorService.isTerminated()) executorService.shutdown();
-        System.out.println("Time : " + (System.currentTimeMillis() - timeStart) + "ms" +
+        time1 = System.currentTimeMillis() - timeStart;
+        System.out.println("Time : " + time1 + "ms" +
                 " count: " + count.get());
+
+
+
 
     }
     public static void main(String[] args){

@@ -5,16 +5,16 @@ spring:
     hikari:
       maximum-pool-size: 8
   jpa:
-    show-sql: true
+#    show-sql: true
     database-platform: org.hibernate.dialect.PostgreSQL9Dialect
     properties:
       hibernate:
         jdbc:
           lob.non_contextual_creation: true
   profiles:
-    active: working
+    active: den
 server:
-  port: 8009
+  port: 9000
 ---
 spring:
   profiles: verification
@@ -32,5 +32,6 @@ spring:
   spring:
     profiles: den
     datasource:
-      username: postgres
-      password: postgres
+      username: root
+      password: root
+

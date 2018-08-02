@@ -8,6 +8,7 @@ import com.mediatype.examplework.exception.SaveFileException;
 import com.mediatype.examplework.message.ImageMessage;
 import com.mediatype.examplework.model.Image;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,7 @@ public class ImageServiceImpl extends BaseServiceImpl<Image> implements ImageSer
     private ModelMapper modelMapper;
 
     private ImageRepository imageRepository;
-
+    @Autowired
     public ImageServiceImpl(ImageRepository imageRepository, ModelMapper modelMapper){
         this.modelMapper = modelMapper;
         this.imageRepository = imageRepository;
