@@ -46,30 +46,29 @@ public class Starter implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-
         long time;
         int poolSize = Runtime.getRuntime().availableProcessors()*2;
         ExecutorService executorService = Executors.newFixedThreadPool(poolSize);
 
         long timeStart = System.currentTimeMillis();
 
-        for (int i = 0; i < 8; i++){
+        for (int i = 0; i < poolSize; i++){
             executorService.submit(() -> {
                 AtomicLong count = new AtomicLong();
+
                 ConcurrentLinkedQueue<Image> images = new ConcurrentLinkedQueue<>();
                 for(int c = 0; c < 125_000; c++) {
+
                     images.add(new Image("www"));
                     count.incrementAndGet();
-                    synchronized(images){
                     if (count.get()%10_000 == 0 || count.get() == 125_000){
-
                         save(images);
-
-                        }
                     }
                 }
             });
         }
+
+
 
         while(!executorService.isTerminated()) executorService.shutdown();
         time = System.currentTimeMillis() - timeStart;
