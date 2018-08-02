@@ -3,6 +3,9 @@ package com.computools.data.saver;
 import com.mediatype.examplework.ExampleWorkApplication;
 import com.mediatype.examplework.dao.ImageRepository;
 import com.mediatype.examplework.model.Image;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
@@ -12,52 +15,67 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.Cacheable;
+import javax.persistence.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.locks.ReentrantLock;
 
 @SpringBootApplication
 @Import(ExampleWorkApplication.class)
 public class Starter implements CommandLineRunner {
 
 
+    private EntityManagerFactory entityManagerFactory;
+
     private ImageRepository imageRepository;
 
-    private AtomicLong count;
+    private ReentrantLock lock;
 
     @Autowired
-    public Starter(ImageRepository imageRepository){
+    public Starter(ImageRepository imageRepository, EntityManagerFactory entityManagerFactory){
         this.imageRepository = imageRepository;
+        this.entityManagerFactory = entityManagerFactory;
+        lock = new ReentrantLock();
     }
 
 
     @Override
     public void run(String... args) throws Exception {
 
-        long time1;
-        count = new AtomicLong();
+
+        long time;
         int poolSize = Runtime.getRuntime().availableProcessors()*2;
         ExecutorService executorService = Executors.newFixedThreadPool(poolSize);
-        ConcurrentLinkedQueue<Image> images = new ConcurrentLinkedQueue<>();
 
         long timeStart = System.currentTimeMillis();
+
+        timeStart = System.currentTimeMillis();
         for (int i = 0; i < 8; i++){
             executorService.submit(() -> {
-                for(int c = 0; c < 5_000; c++) {
-                    imageRepository.save(new Image("www"));
+                AtomicLong count = new AtomicLong();
+                ConcurrentLinkedQueue<Image> images = new ConcurrentLinkedQueue<>();
+                for(int c = 0; c < 125_000; c++) {
+                    images.add(new Image("www"));
                     count.incrementAndGet();
+                    synchronized(images){
+                    if (count.get()%10_000 == 0 || count.get() == 125_000){
+
+                            imageRepository.saveAll(images);
+                            images.clear();
+                        }
+                    }
+
                 }
-                imageRepository.flush();
             });
         }
 
         while(!executorService.isTerminated()) executorService.shutdown();
-        time1 = System.currentTimeMillis() - timeStart;
-        System.out.println("Time : " + time1 + "ms" +
-                " count: " + count.get());
+        time = System.currentTimeMillis() - timeStart;
+        System.out.println("Time : " + time + "ms" );
 
 
 
