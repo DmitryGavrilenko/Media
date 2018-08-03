@@ -3,14 +3,23 @@ package com.computools.data.saver;
 import com.mediatype.examplework.ExampleWorkApplication;
 import com.mediatype.examplework.dao.ImageRepository;
 import com.mediatype.examplework.model.Image;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManagerFactory;
+import javax.persistence.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -21,18 +30,11 @@ import java.util.concurrent.locks.ReentrantLock;
 @Import(ExampleWorkApplication.class)
 public class Starter implements CommandLineRunner {
 
-
-    private EntityManagerFactory entityManagerFactory; // Please remove it
-
     private ImageRepository imageRepository;
 
-    private ReentrantLock lock; // PLease remove it
-
     @Autowired
-    public Starter(ImageRepository imageRepository, EntityManagerFactory entityManagerFactory){
+    public Starter(ImageRepository imageRepository){
         this.imageRepository = imageRepository;
-        this.entityManagerFactory = entityManagerFactory;
-        lock = new ReentrantLock();
     }
 
 
@@ -48,10 +50,9 @@ public class Starter implements CommandLineRunner {
         for (int i = 0; i < poolSize; i++){
             executorService.submit(() -> {
                 AtomicLong count = new AtomicLong();
+                ConcurrentLinkedQueue<Image> images = new ConcurrentLinkedQueue<>();
 
-                ConcurrentLinkedQueue<Image> images = new ConcurrentLinkedQueue<>();  // Why do you use here atomic collection ?
                 for(int c = 0; c < 125_000; c++) {
-
                     images.add(new Image("www"));
                     count.incrementAndGet();
                     if (count.get()%10_000 == 0 || count.get() == 125_000){
