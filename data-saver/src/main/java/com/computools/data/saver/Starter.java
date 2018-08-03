@@ -3,21 +3,14 @@ package com.computools.data.saver;
 import com.mediatype.examplework.ExampleWorkApplication;
 import com.mediatype.examplework.dao.ImageRepository;
 import com.mediatype.examplework.model.Image;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.*;
+import javax.persistence.EntityManagerFactory;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -29,11 +22,11 @@ import java.util.concurrent.locks.ReentrantLock;
 public class Starter implements CommandLineRunner {
 
 
-    private EntityManagerFactory entityManagerFactory;
+    private EntityManagerFactory entityManagerFactory; // Please remove it
 
     private ImageRepository imageRepository;
 
-    private ReentrantLock lock;
+    private ReentrantLock lock; // PLease remove it
 
     @Autowired
     public Starter(ImageRepository imageRepository, EntityManagerFactory entityManagerFactory){
@@ -47,8 +40,8 @@ public class Starter implements CommandLineRunner {
     public void run(String... args) throws Exception {
 
         long time;
-        int poolSize = Runtime.getRuntime().availableProcessors()*2;
-        ExecutorService executorService = Executors.newFixedThreadPool(poolSize);
+        int poolSize = Runtime.getRuntime().availableProcessors()*2; // Absolutely right
+        ExecutorService executorService = Executors.newFixedThreadPool(poolSize); // You are working out of spring application, please replace it, and make work with @Async
 
         long timeStart = System.currentTimeMillis();
 
@@ -56,7 +49,7 @@ public class Starter implements CommandLineRunner {
             executorService.submit(() -> {
                 AtomicLong count = new AtomicLong();
 
-                ConcurrentLinkedQueue<Image> images = new ConcurrentLinkedQueue<>();
+                ConcurrentLinkedQueue<Image> images = new ConcurrentLinkedQueue<>();  // Why do you use here atomic collection ?
                 for(int c = 0; c < 125_000; c++) {
 
                     images.add(new Image("www"));
@@ -70,7 +63,9 @@ public class Starter implements CommandLineRunner {
 
 
 
-        while(!executorService.isTerminated()) executorService.shutdown();
+        while(!executorService.isTerminated()){
+            Thread.sleep(10);
+        } executorService.shutdown(); //While making a lot of trouble for performance You need to decrease resource consume for this part
         time = System.currentTimeMillis() - timeStart;
         System.out.println("Time : " + time + "ms" );
 
