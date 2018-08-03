@@ -1,0 +1,6 @@
+com/computools/audit/model/Image.class
+com/computools/audit/dao/ImageRepository.class
+com/computools/audit/model/User.class
+com/computools/audit/model/BaseModel.class
+com/computools/audit/config/AuditConfig.class
+com/computools/audit/dao/UserRepository.class

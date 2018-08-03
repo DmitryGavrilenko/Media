@@ -9,18 +9,24 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>data-saver</artifactId>
+    <artifactId>service</artifactId>
     <dependencies>
         <dependency>
             <groupId>com.mediatype</groupId>
-            <artifactId>example-work</artifactId>
+            <artifactId>audit</artifactId>
             <version>0.0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.mediatype</groupId>
-            <artifactId>audit</artifactId>
+            <artifactId>handler</artifactId>
             <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.modelmapper</groupId>
+            <artifactId>modelmapper</artifactId>
+            <version>2.0.0</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

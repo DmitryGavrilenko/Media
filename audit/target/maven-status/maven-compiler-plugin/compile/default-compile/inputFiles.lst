@@ -1,0 +1,6 @@
+/home/user/IdeaProjects/Media/audit/src/main/java/com/computools/audit/dao/UserRepository.java
+/home/user/IdeaProjects/Media/audit/src/main/java/com/computools/audit/model/User.java
+/home/user/IdeaProjects/Media/audit/src/main/java/com/computools/audit/dao/ImageRepository.java
+/home/user/IdeaProjects/Media/audit/src/main/java/com/computools/audit/model/Image.java
+/home/user/IdeaProjects/Media/audit/src/main/java/com/computools/audit/model/BaseModel.java
+/home/user/IdeaProjects/Media/audit/src/main/java/com/computools/audit/config/AuditConfig.java

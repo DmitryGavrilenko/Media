@@ -1,0 +1,8 @@
+message/ImageMessage.class
+response/Response.class
+handler/Handler.class
+message/UserMessage.class
+exception/SaveFileException.class
+exception/FileExistsException.class
+exception/GlobalException.class
+exception/NotFoundException.class
