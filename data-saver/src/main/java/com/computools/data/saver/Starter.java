@@ -28,18 +28,11 @@ import java.util.concurrent.locks.ReentrantLock;
 @Import(ExampleWorkApplication.class)
 public class Starter implements CommandLineRunner {
 
-
-    private EntityManagerFactory entityManagerFactory;
-
     private ImageRepository imageRepository;
 
-    private ReentrantLock lock;
-
     @Autowired
-    public Starter(ImageRepository imageRepository, EntityManagerFactory entityManagerFactory){
+    public Starter(ImageRepository imageRepository){
         this.imageRepository = imageRepository;
-        this.entityManagerFactory = entityManagerFactory;
-        lock = new ReentrantLock();
     }
 
 
@@ -55,10 +48,9 @@ public class Starter implements CommandLineRunner {
         for (int i = 0; i < poolSize; i++){
             executorService.submit(() -> {
                 AtomicLong count = new AtomicLong();
-
                 ConcurrentLinkedQueue<Image> images = new ConcurrentLinkedQueue<>();
-                for(int c = 0; c < 125_000; c++) {
 
+                for(int c = 0; c < 125_000; c++) {
                     images.add(new Image("www"));
                     count.incrementAndGet();
                     if (count.get()%10_000 == 0 || count.get() == 125_000){
