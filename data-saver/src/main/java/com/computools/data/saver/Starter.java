@@ -59,7 +59,7 @@ public class Starter implements CommandLineRunner {
         images = new ArrayList<>();
         List<Future<String>> futures = new ArrayList<>();
         for(int i = 0; i < 1_000_000; i++){
-            images.add(new Image("skfj"));
+            images.add(new Image("dsg"));
         }
         int endIndex = images.size() / batchSize;
         int toIndex = batchSize;

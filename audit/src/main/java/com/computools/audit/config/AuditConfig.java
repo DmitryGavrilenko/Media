@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @Configuration
 @EnableJpaRepositories(basePackages = "com.computools.audit.dao")
-//@EnableJpaAuditing
 @EntityScan(basePackages = "com.computools.audit.model")
 public class AuditConfig {
 }
