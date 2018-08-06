@@ -12,6 +12,7 @@
         <module>service</module>
         <module>audit</module>
         <module>handler</module>
+        <module>client</module>
     </modules>
     <packaging>pom</packaging>
 

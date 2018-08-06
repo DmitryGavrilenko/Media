@@ -7,7 +7,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
 
-@Component
+/*
+* Common comments.
+* 1. If you are creating async configuration, please ensure what such configuration has only one instance
+* 2. If you have`t any additional work separated by type of exception please create one exception handling part(line 43)
+* */
+
+//@Component
 public class Starter implements CommandLineRunner {
 
     private SaveService saveService;
@@ -31,12 +37,10 @@ public class Starter implements CommandLineRunner {
             futures.add(saveService.save(batchSize));
         }
 
-        futures.stream().forEach((result) -> {
+        futures.forEach((result) -> {
             try {
                 result.get();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
+            } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }
         });

@@ -3,31 +3,21 @@ import com.computools.audit.model.Image;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.context.annotation.Bean;
-import org.springframework.scheduling.annotation.EnableAsync;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
-
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executor;
 
 //@Component
-@EnableAsync
 public class VictorStarter implements CommandLineRunner {
     private final VictorBatchService victorBatchService;
-    @Bean
-    public Executor executor(){
-        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        int cores = Runtime.getRuntime().availableProcessors() * 2;
-        executor.setCorePoolSize(cores);
-        executor.initialize();
-        return executor;
+    public static void main(String[] args) {
+        new SpringApplicationBuilder(VictorStarter.class)
+                .web(WebApplicationType.NONE)
+                .run(args);
     }
-
     @Override
     public void run(String... args) throws Exception {
         long start = System.currentTimeMillis();
@@ -35,7 +25,7 @@ public class VictorStarter implements CommandLineRunner {
         for (int i = 0; i < 1000000; i++){
             images.add(new Image("werwer"));
         }
-        int batchSize = 100000;
+        int batchSize = 10000;
         int maxIndex = images.size() / batchSize;
         List<CompletableFuture> futureList = new ArrayList<>();
         int toIndex = batchSize;

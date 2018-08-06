@@ -10,6 +10,10 @@ public class Response {
 
     private String code;
 
+    public Response(){
+
+    }
+
     public Response(String message, HttpStatus status, String code) {
         this.message = message;
         this.status = status;
