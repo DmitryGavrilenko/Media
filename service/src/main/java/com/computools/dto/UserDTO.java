@@ -17,7 +17,6 @@ public class UserDTO {
 
     private String email;
 
-//    @JsonIgnore
     private MultipartFile file;
 
     private String path;
