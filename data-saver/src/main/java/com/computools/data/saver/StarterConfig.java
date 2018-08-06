@@ -13,7 +13,6 @@ import java.util.concurrent.Future;
 
 @Configuration
 @EnableAsync
-@ComponentScan(basePackageClasses = {SaveService.class})
 public class StarterConfig {
 
     @Bean
