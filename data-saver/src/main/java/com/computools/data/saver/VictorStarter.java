@@ -27,11 +27,7 @@ public class VictorStarter implements CommandLineRunner {
         executor.initialize();
         return executor;
     }
-    public static void main(String[] args) {
-        new SpringApplicationBuilder(VictorStarter.class)
-                .web(WebApplicationType.NONE)
-                .run(args);
-    }
+
     @Override
     public void run(String... args) throws Exception {
         long start = System.currentTimeMillis();
