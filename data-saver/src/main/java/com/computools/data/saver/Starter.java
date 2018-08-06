@@ -55,20 +55,26 @@ public class Starter implements CommandLineRunner {
 //        while(!executorService.isTerminated()){executorService.shutdown(); }  //While making a lot of trouble for performance You need to decrease resource consume for this part
 
         //TODO =============================================================================================
+        int dataSize = 1_000_000;
         int batchSize = 10_000;
+        int endIndex = dataSize / batchSize;
         images = new ArrayList<>();
         List<Future<String>> futures = new ArrayList<>();
-        for(int i = 0; i < 1_000_000; i++){
-            images.add(new Image("dsg"));
-        }
-        int endIndex = images.size() / batchSize;
-        int toIndex = batchSize;
+//        for(int i = 0; i < 1_000_000; i++){
+//            images.add(new Image("dsg"));
+//        }
+//        int endIndex = images.size() / batchSize;
+//        int toIndex = batchSize;
 
-        for(int i = 0; i < endIndex; i++){
-            if((endIndex - i) != 1) futures.add(saveService.save(images.subList(i * batchSize, toIndex)));
-            else futures.add(saveService.save(images.subList(i*batchSize, images.size())));
-            toIndex += batchSize;
+        for(int i = 0; i < endIndex; i++) {
+            futures.add(saveService.save(batchSize));
         }
+
+//        for(int i = 0; i < endIndex; i++){
+//            if((endIndex - i) != 1) futures.add(saveService.save(images.subList(i * batchSize, toIndex)));
+//            else futures.add(saveService.save(images.subList(i*batchSize, images.size())));
+//            toIndex += batchSize;
+//        }
 
         futures.stream().forEach((result) -> {
             try {
