@@ -1,5 +1,7 @@
 package com.computools.dto;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import java.util.UUID;
 
 public class BaseDTO {

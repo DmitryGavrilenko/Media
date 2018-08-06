@@ -13,6 +13,7 @@ import java.util.concurrent.Future;
 
 @Configuration
 @EnableAsync
+@ComponentScan
 public class StarterConfig {
 
     @Bean

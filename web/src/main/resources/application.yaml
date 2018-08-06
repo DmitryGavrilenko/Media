@@ -1,20 +1,22 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/images
+    url: jdbc:postgresql://localhost:5433/images
     driver-class-name: org.postgresql.Driver
     hikari:
       maximum-pool-size: 8
   jpa:
-#    show-sql: true
+    show-sql: true
     database-platform: org.hibernate.dialect.PostgreSQL94Dialect
     properties:
       hibernate:
         jdbc:
           lob.non_contextual_creation: true
   profiles:
-    active: verification
+    active: working
 server:
   port: 8009
+
+server_url: http://localhost:8009/image/upload
 ---
 spring:
   profiles: verification

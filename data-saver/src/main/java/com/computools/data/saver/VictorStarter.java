@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
-@Component
+//@Component
 public class VictorStarter implements CommandLineRunner {
     private final VictorBatchService victorBatchService;
     public static void main(String[] args) {

@@ -52,7 +52,7 @@ public class ImageServiceImpl extends BaseServiceImpl<Image> implements ImageSer
 
         Image image = modelMapper.map(userDTO, Image.class);
         imageRepository.save(image);
-        saveImage(userDTO.getFile());
+//        saveImage(userDTO.getFile());
 
     }
 

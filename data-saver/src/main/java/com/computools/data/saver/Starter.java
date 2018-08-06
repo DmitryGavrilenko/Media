@@ -13,7 +13,7 @@ import java.util.concurrent.*;
 * 2. If you have`t any additional work separated by type of exception please create one exception handling part(line 43)
 * */
 
-@Component
+//@Component
 public class Starter implements CommandLineRunner {
 
     private SaveService saveService;

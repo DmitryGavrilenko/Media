@@ -20,8 +20,6 @@ public class SaveService {
     public SaveService(ImageRepository imageRepository){
         this.imageRepository = imageRepository;
     }
-
-
     @Async
     public Future<String> save(int batchSize){
         List<Image>images = new ArrayList<>();

@@ -28,14 +28,12 @@ public class UserController {
     }
 
     @PostMapping(value = "/save/form")
-    @Transactional
-    public ResponseEntity<Response> saveUserForm(@Valid UserDTO userDTO){
+    public ResponseEntity<Response> saveUserForm(@RequestBody @Valid UserDTO userDTO){
         userService.saveUserForm(userDTO);
         return new ResponseEntity<>(new Response(UserMessage.CREATED.getMessage()
                 , HttpStatus.CREATED, HttpStatus.CREATED.toString()),HttpStatus.CREATED);
     }
 
-    @Transactional
     @PostMapping(value = "/save/by")
     public ResponseEntity<Response> saveUser(@RequestBody @Valid UserDTO userDTO){
 
@@ -43,8 +41,10 @@ public class UserController {
 
         userService.saveEntity(user);
 
-        return new ResponseEntity<>(new Response(UserMessage.CREATED.getMessage()
-                , HttpStatus.CREATED, HttpStatus.CREATED.toString()),HttpStatus.CREATED);
+        Response response = new Response(UserMessage.CREATED.getMessage()
+                , HttpStatus.CREATED, HttpStatus.CREATED.toString());
+
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
 
     }
 
