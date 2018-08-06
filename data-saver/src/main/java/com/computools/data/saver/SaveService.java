@@ -15,13 +15,14 @@ import java.util.concurrent.Future;
 public class SaveService {
 
     private ImageRepository imageRepository;
+
     @Autowired
     public SaveService(ImageRepository imageRepository){
         this.imageRepository = imageRepository;
     }
 
 
-    @Async("threadPoolTaskExecutor")
+    @Async
     public Future<String> save(int batchSize){
         List<Image>images = new ArrayList<>();
         for(int i = 0; i < batchSize; i++){

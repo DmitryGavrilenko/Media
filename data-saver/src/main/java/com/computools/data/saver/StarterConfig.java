@@ -16,7 +16,7 @@ import java.util.concurrent.Future;
 @ComponentScan(basePackageClasses = {SaveService.class})
 public class StarterConfig {
 
-    @Bean(name = "threadPoolTaskExecutor")
+    @Bean
     public Executor executor(){
         int poolSize = Runtime.getRuntime().availableProcessors()*2;
         ThreadPoolTaskExecutor threadPoolTaskExecutor =  new ThreadPoolTaskExecutor();
