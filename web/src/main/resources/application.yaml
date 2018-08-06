@@ -12,7 +12,7 @@ spring:
         jdbc:
           lob.non_contextual_creation: true
   profiles:
-    active: working
+    active: verification
 server:
   port: 8009
 ---
