@@ -21,12 +21,13 @@ import javax.xml.ws.Service;
 @RequestMapping(value = "/image")
 public class ImageController {
 
-    @Autowired
+
     private ImageServiceImpl imageService;
 
-//    public ImageController(ImageServiceImpl imageService){
-//        this.imageService = imageService;
-//    }
+    @Autowired
+    public ImageController(ImageServiceImpl imageService){
+        this.imageService = imageService;
+    }
 
     @PostMapping(value = "/upload")
     public ResponseEntity<Response> uploadImage(UserDTO userDTO){

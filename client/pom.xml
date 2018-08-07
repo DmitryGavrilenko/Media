@@ -12,6 +12,17 @@
     <artifactId>client</artifactId>
     <dependencies>
         <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.5</version>
+        </dependency>
+        <!-- Apache HttpClient Mime -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpmime</artifactId>
+            <version>4.5.5</version>
+        </dependency>
+        <dependency>
             <groupId>com.mediatype</groupId>
             <artifactId>service</artifactId>
             <version>0.0.1-SNAPSHOT</version>

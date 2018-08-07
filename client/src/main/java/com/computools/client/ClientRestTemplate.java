@@ -5,6 +5,11 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+
 @Component
 public class ClientRestTemplate implements CommandLineRunner {
 
@@ -18,8 +23,21 @@ public class ClientRestTemplate implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        long startTime = System.currentTimeMillis();
+        List<Future<String>> futures = new ArrayList<>();
+
         for (int i = 0; i < 8; i++){
-            clientSaveService.save(batchSize);
+            futures.add(clientSaveService.save(batchSize));
         }
+
+        futures.forEach((result) -> {
+            try {
+                result.get();
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+        });
+        long timeEnd = System.currentTimeMillis() - startTime;
+        System.out.println("time to Query Processing  :  " + timeEnd);
     }
 }
