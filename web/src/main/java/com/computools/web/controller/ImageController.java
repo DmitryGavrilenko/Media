@@ -29,7 +29,6 @@ public class ImageController {
 //    }
 
     @PostMapping(value = "/upload")
-    @Transactional
     public ResponseEntity<Response> uploadImage(UserDTO userDTO){
 
         imageService.saveImage(userDTO);

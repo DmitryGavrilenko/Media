@@ -3,9 +3,15 @@ package com.computools.client;
 import com.computools.client.file.MultipartImpl;
 import com.computools.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import response.Response;
@@ -41,19 +47,37 @@ public class ClientSaveService {
         for(int i = 0; i < batchSize; i++){
 
             try {
-                UserDTO userDTO = new UserDTO();
-                userDTO.setEmail("testemail");
-                userDTO.setPassword("12345678");
-                userDTO.setName("testname");
-                userDTO.setFile(multipart);
-////                userDTO.setFile(file);
-//                TestDTO testDTO = new TestDTO();
-//                testDTO.setEmail("testemail");
-//                testDTO.setPassword("12345678");
-//                testDTO.setName("testname");
 
-                ResponseEntity<Response> infoResponce = restTemplate.postForEntity("http://localhost:8009/user/save/form",
-                        userDTO, Response.class);
+
+                LinkedMultiValueMap<String, Object> map = new LinkedMultiValueMap<>();
+                FileSystemResource value = new FileSystemResource(new File("images/lake.jpg"));
+//                map.add("file", new ClassPathResource("images/lake.jpg"));
+                map.add("file", value);
+                map.add("name", "testname");
+                map.add("email", "testemail");
+                map.add("password","12345678");
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+                HttpEntity<LinkedMultiValueMap<String, Object>> requestEntity = new    HttpEntity<LinkedMultiValueMap<String, Object>>(
+                        map, headers);
+                ResponseEntity<Response> infoResponce = restTemplate.postForEntity("http://localhost:9000/user/save/form",
+                        requestEntity, Response.class);
+
+
+//                UserDTO userDTO = new UserDTO();
+//                userDTO.setEmail("testemail");
+//                userDTO.setPassword("12345678");
+//                userDTO.setName("testname");
+//                userDTO.setFile(multipart);
+//////                userDTO.setFile(file);
+////                TestDTO testDTO = new TestDTO();
+////                testDTO.setEmail("testemail");
+////                testDTO.setPassword("12345678");
+////                testDTO.setName("testname");
+//
+//                ResponseEntity<Response> infoResponce = restTemplate.postForEntity("http://localhost:9000/user/save/form",
+//                        userDTO, Response.class);
             }catch(Exception exc){
                 exc.printStackTrace();
             }

@@ -37,7 +37,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
     public boolean saveUserForm(UserDTO userDTO) {
         Image image = modelMapper.map(userDTO, Image.class);
         User user = image.getUser();
-//        user.getImages().add(image);
+        user.getImages().add(image);
         saveEntity(user);
         imageService.saveImage(userDTO.getFile());
 
