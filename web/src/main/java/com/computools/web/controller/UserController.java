@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import response.Response;
 
 import javax.validation.Valid;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Controller
 @RequestMapping(value = "/user")
@@ -21,6 +22,7 @@ public class UserController {
 
     private UserServiceImpl userService;
     private ModelMapper modelMapper;
+    public static final AtomicLong count = new AtomicLong(0);
 
     public UserController(UserServiceImpl userService, ModelMapper modelMapper){
         this.userService = userService;
@@ -29,8 +31,9 @@ public class UserController {
 
     @PostMapping(value = "/save/form")
     public ResponseEntity<Response> saveUserForm(@Valid UserDTO userDTO){
-        System.out.println(Thread.currentThread().getName());
-        userService.saveUserForm(userDTO);
+        count.incrementAndGet();
+//        System.out.println(Thread.currentThread().getName());
+//        userService.saveUserForm(userDTO);
         return new ResponseEntity<>(new Response(UserMessage.CREATED.getMessage()
                 , HttpStatus.CREATED, HttpStatus.CREATED.toString()),HttpStatus.CREATED);
     }

@@ -26,7 +26,7 @@ public class ClientRestTemplate implements CommandLineRunner {
         long startTime = System.currentTimeMillis();
         List<Future<String>> futures = new ArrayList<>();
 
-        for (int i = 0; i < 8; i++){
+        for (int i = 0; i < 100; i++){
             futures.add(clientSaveService.save(batchSize));
         }
 

@@ -13,15 +13,8 @@ import java.util.concurrent.Future;
 
 @Configuration
 @EnableAsync
-@ComponentScan
+//@ComponentScan
 public class StarterConfig {
 
-    @Bean
-    public Executor executor(){
-        int poolSize = Runtime.getRuntime().availableProcessors()*2;
-        ThreadPoolTaskExecutor threadPoolTaskExecutor =  new ThreadPoolTaskExecutor();
-        threadPoolTaskExecutor.setCorePoolSize(poolSize);
-        return threadPoolTaskExecutor;
-    }
 
 }
