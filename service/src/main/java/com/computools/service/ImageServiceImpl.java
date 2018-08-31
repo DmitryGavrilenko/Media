@@ -5,9 +5,11 @@ import com.computools.audit.dao.UserRepository;
 import com.computools.audit.model.Image;
 import com.computools.audit.model.User;
 import com.computools.dto.UserDTO;
+import com.sun.nio.zipfs.ZipPath;
 import exception.FileExistsException;
 import exception.NotFoundException;
 import exception.SaveFileException;
+import jdk.internal.util.xml.impl.Input;
 import message.ImageMessage;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @Service
@@ -36,13 +39,13 @@ public class ImageServiceImpl extends BaseServiceImpl<Image> implements ImageSer
     }
 
     public void saveImage(MultipartFile file) {
-
+        String fileName = file.getOriginalFilename();
         try {
-            Files.copy(file.getInputStream(), Paths.get("images/" + file.getOriginalFilename()));
+            Files.copy((InputStream) file.getInputStream(), Paths.get("/home/user/IdeaProjects/Media/images/" + fileName));
         }catch(FileAlreadyExistsException e){
 //            throw new FileExistsException(ImageMessage.FILE_ALREADY_EXISTS.getMessage(), HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST.toString());
         }catch (IOException e) {
-            imageRepository.delete(imageRepository.findByPath("images/" + file));
+            imageRepository.delete(imageRepository.findByPath("images/" + file.getOriginalFilename()));
             throw new SaveFileException(ImageMessage.FAILED_SAVE_FILE.getMessage()
                     , HttpStatus.INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR.toString());
         }
@@ -54,7 +57,7 @@ public class ImageServiceImpl extends BaseServiceImpl<Image> implements ImageSer
 
         Image image = modelMapper.map(userDTO, Image.class);
         imageRepository.save(image);
-        saveImage(userDTO.getFile());
+        saveImage(userDTO.getFile()); // TODO look on path file expected ( "/home/user/IdeaProjects/Media/images/") but was ("images/lake.jpg)
 
 //        try {
 //            Files.copy(userDTO.getFile().getInputStream(), Paths.get("images/" + userDTO.getFile().getOriginalFilename()));
@@ -80,7 +83,7 @@ public class ImageServiceImpl extends BaseServiceImpl<Image> implements ImageSer
     public InputStreamResource getImageStreamResource(String name) {
 
         InputStreamResource image = null;
-        File file = new File("images/" + name);
+        File file = new File("/home/user/IdeaProjects/Media/images/" + name);
 
         try {
             FileInputStream fileInputStream = new FileInputStream(file);

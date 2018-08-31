@@ -39,8 +39,8 @@ spring:
     password: root
 ---
 spring:
+  profiles: test
+  url: jdbc:postgresql://localhost:5432/imagestest
   datasource:
     username: root
     password: root
-  profiles: test
-  url: jdbc:postgresql://localhost:5432/imagestest

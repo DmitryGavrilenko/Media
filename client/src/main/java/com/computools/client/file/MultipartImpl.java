@@ -1,6 +1,5 @@
 package com.computools.client.file;
 
-import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 

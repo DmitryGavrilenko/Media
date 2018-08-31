@@ -1,18 +1,21 @@
 package config;
 
-import com.computools.audit.config.AuditConfig;
-import com.computools.config.ServiceConfig;
-import com.computools.web.ExampleWorkApplication;
+import com.computools.web.config.AppConfig;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.web.multipart.MultipartFile;
+import utils.MultipartFileImpl;
 
 @Configuration
 @EnableAutoConfiguration
-@Import({AuditConfig.class})
+@Import({AppConfig.class})
 public class TestConfig {
 
-
+    @Bean
+    public MultipartFile multipartFile(){
+        return new MultipartFileImpl();
+    }
 
 }

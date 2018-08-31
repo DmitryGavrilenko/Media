@@ -33,7 +33,7 @@ public class UserController {
     public ResponseEntity<Response> saveUserForm(@Valid UserDTO userDTO){
         count.incrementAndGet();
 //        System.out.println(Thread.currentThread().getName());
-//        userService.saveUserForm(userDTO);
+        userService.saveUserForm(userDTO);
         return new ResponseEntity<>(new Response(UserMessage.CREATED.getMessage()
                 , HttpStatus.CREATED, HttpStatus.CREATED.toString()),HttpStatus.CREATED);
     }

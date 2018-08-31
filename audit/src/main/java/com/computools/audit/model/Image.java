@@ -8,7 +8,7 @@ public class Image extends BaseModel{
 
     private String path;
 
-    @ManyToOne(cascade = CascadeType.ALL, targetEntity = User.class)
+    @ManyToOne(cascade = CascadeType.DETACH, targetEntity = User.class)
     private User user;
 
     public Image() {

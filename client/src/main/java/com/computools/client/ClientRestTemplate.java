@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-@Component
+//@Component
 public class ClientRestTemplate implements CommandLineRunner {
 
     private ClientSaveService clientSaveService;
