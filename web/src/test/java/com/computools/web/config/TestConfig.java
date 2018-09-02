@@ -1,6 +1,5 @@
-package config;
+package com.computools.web.config;
 
-import com.computools.web.config.AppConfig;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

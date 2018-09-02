@@ -5,7 +5,8 @@ import com.computools.audit.dao.UserRepository;
 import com.computools.audit.model.Image;
 import com.computools.audit.model.User;
 import com.computools.dto.UserDTO;
-import config.TestConfig;
+import com.computools.path.Path;
+import com.computools.web.config.TestConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,11 +56,7 @@ public class UserServiceImplTest {
 
     @Test
     public void findUserByEmail() {
-
-        User user = userRepository.findByEmail("gavrilenko6f@gmail.com");
-
         User expectedUser = userService.findUserByEmail("gavrilenko6f@gmail.com");
-
         assertNotNull(expectedUser);
     }
 
@@ -82,7 +79,7 @@ public class UserServiceImplTest {
     }
 
     @Test
-    public void saveImageForUser() {
+    public void saveImageForUser() { // TODO rewrite this test
         MultipartFileImpl multipartData = new MultipartFileImpl();
 
         UserDTO userDTO = new UserDTO();
@@ -93,7 +90,7 @@ public class UserServiceImplTest {
         assertNotNull(user);
 
         Image image = new Image();
-        image.setPath("images/" + multipartData.getOriginalFilename());
+        image.setPath(Path.PATH.getPath() + multipartData.getOriginalFilename());
         image.setUser(user);
         imageRepository.save(image);
 

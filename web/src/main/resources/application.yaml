@@ -12,7 +12,7 @@ spring:
         jdbc:
           lob.non_contextual_creation: true
   profiles:
-    active: test
+    active: ${prfile:working}
 server:
   port: 9000
 
@@ -28,7 +28,7 @@ spring:
  spring:
   profiles: working
   datasource:
-    username: root
+    username: postgres
     password: root
 
 ---

@@ -1,14 +1,14 @@
 package com.computools.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.computools.path.Path;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.Size;
 
 
 public class UserDTO {
+
+    private final String PATH = Path.PATH.getPath();
 
     private String name;
 
@@ -26,7 +26,7 @@ public class UserDTO {
     }
 
     public String getPath() {
-        return file == null ? "images/" : "images/" + file.getOriginalFilename();
+        return file == null ? PATH : PATH  + file.getOriginalFilename();
     }
 
 

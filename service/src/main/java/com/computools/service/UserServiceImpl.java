@@ -5,6 +5,7 @@ import com.computools.audit.dao.UserRepository;
 import com.computools.audit.model.Image;
 import com.computools.audit.model.User;
 import com.computools.dto.UserDTO;
+import com.computools.path.Path;
 import exception.NotFoundException;
 import message.UserMessage;
 import org.modelmapper.ModelMapper;
@@ -50,7 +51,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
         if(user == null) throw new NotFoundException(UserMessage.NOT_FOUND.getMessage()
                 , HttpStatus.NOT_FOUND, HttpStatus.NOT_FOUND.toString());
         Image image = new Image();
-        image.setPath("images/" + userDTO.getFile().getOriginalFilename());
+        image.setPath(Path.PATH.getPath() + userDTO.getFile().getOriginalFilename());
         image.setUser(user);
         imageService.saveEntity(image);
         imageService.saveImage(userDTO.getFile());

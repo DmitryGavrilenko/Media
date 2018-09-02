@@ -12,7 +12,7 @@ spring:
         jdbc:
           lob.non_contextual_creation: true
   profiles:
-    active: test
+    active: ${profile:test}
 server:
   port: 9000
 
@@ -40,7 +40,9 @@ spring:
 ---
 spring:
   profiles: test
-  url: jdbc:postgresql://localhost:5432/imagestest
   datasource:
-    username: root
+    url: jdbc:postgresql://localhost:5432/imagestest
+    username: postgres
     password: root
+server:
+  port: 9001
