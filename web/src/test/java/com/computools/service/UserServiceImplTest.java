@@ -4,17 +4,17 @@ import com.computools.audit.dao.UserRepository;
 import com.computools.audit.model.Image;
 import com.computools.audit.model.User;
 import com.computools.dto.UserDTO;
-import com.computools.path.Path;
+import com.computools.utils.MultipartFileImpl;
 import com.computools.web.config.TestConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Profile;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.multipart.MultipartFile;
-import com.computools.utils.MultipartFileImpl;
 
 import javax.annotation.PostConstruct;
 import java.util.Arrays;
@@ -39,12 +39,15 @@ public class UserServiceImplTest {
     @Autowired
     private ModelMapper modelMapper;
 
+    @Value("${image_path}")
+    private String path;
+
     @PostConstruct
     public void init(){
         userRepository.deleteAll();
         multipartFile = new MultipartFileImpl();
         userDTO = new UserDTO("Dmitry", "gavrilenko6f@gmail.com"
-                            , "12345678", multipartFile, Path.PATH.getPath());
+                            , "12345678", multipartFile, path);
         Image image = new Image();
         image.setPath(userDTO.getPath());
         User user = modelMapper.map(userDTO, User.class);
@@ -62,7 +65,7 @@ public class UserServiceImplTest {
     @Test
     public void saveUserForm() {
         UserDTO userDTO = new UserDTO("Dmitry", "dmitry@gmail.com"
-                , "12344556", multipartFile, Path.PATH.getPath());
+                , "12344556", multipartFile, path);
         userService.saveUserForm(userDTO);
         User expectedUser = userService.findUserByEmail("dmitry@gmail.com");
         User testUser = userRepository.findByEmail("dmitry@gmail.com");

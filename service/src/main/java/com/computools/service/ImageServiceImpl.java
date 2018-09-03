@@ -3,18 +3,21 @@ package com.computools.service;
 import com.computools.audit.dao.ImageRepository;
 import com.computools.audit.model.Image;
 import com.computools.dto.UserDTO;
-import com.computools.path.Path;
 import exception.NotFoundException;
 import exception.SaveFileException;
 import message.ImageMessage;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -26,21 +29,24 @@ public class ImageServiceImpl extends BaseServiceImpl<Image> implements ImageSer
 
     private ImageRepository imageRepository;
 
+    private final String path;
+
     @Autowired
-    public ImageServiceImpl(ImageRepository imageRepository, ModelMapper modelMapper){
+    public ImageServiceImpl(ImageRepository imageRepository, ModelMapper modelMapper, @Value("${image_path}") String path){
         this.modelMapper = modelMapper;
         this.imageRepository = imageRepository;
+        this.path = path;
         super.setJpaRepository(imageRepository);
     }
 
     public void saveImage(MultipartFile file) {
         String fileName = file.getOriginalFilename();
         try {
-            Files.copy(file.getInputStream(), Paths.get(Path.PATH.getPath() + fileName));
+            Files.copy(file.getInputStream(), Paths.get(path + fileName));
         }catch(FileAlreadyExistsException e){
 //            do nothing if image already exist
         }catch (IOException e) {
-            imageRepository.delete(imageRepository.findByPath(Path.PATH.getPath() + file.getOriginalFilename()));
+            imageRepository.delete(imageRepository.findByPath(path + file.getOriginalFilename()));
             throw new SaveFileException(ImageMessage.FAILED_SAVE_FILE.getMessage()
                     , HttpStatus.INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR.toString());
         }
@@ -77,7 +83,7 @@ public class ImageServiceImpl extends BaseServiceImpl<Image> implements ImageSer
     public InputStreamResource getImageStreamResource(String name) {
 
         InputStreamResource image = null;
-        File file = new File(Path.PATH.getPath() + name);
+        File file = new File(path + name);
 
         try {
             FileInputStream fileInputStream = new FileInputStream(file);
@@ -92,8 +98,8 @@ public class ImageServiceImpl extends BaseServiceImpl<Image> implements ImageSer
 
     @Override
     public boolean pathAlreadyExists() {
-        Image image = imageRepository.findByPath(Path.PATH.getPath());
-        if(image.getPath().equals(Path.PATH.getPath()))
+        Image image = imageRepository.findByPath(path);
+        if(image.getPath().equals(path))
             return true;
         return false;
     }

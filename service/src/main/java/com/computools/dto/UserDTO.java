@@ -1,6 +1,6 @@
 package com.computools.dto;
 
-import com.computools.path.Path;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.Size;
@@ -8,7 +8,8 @@ import javax.validation.constraints.Size;
 
 public class UserDTO {
 
-    private final String PATH = Path.PATH.getPath();
+    @Value("${image_test}")
+    private String path;
 
     private String name;
 
@@ -18,8 +19,6 @@ public class UserDTO {
     private String email;
 
     private MultipartFile file;
-
-    private String path;
 
     public UserDTO(String name, String email, String password
             , MultipartFile file, String path){
@@ -35,7 +34,7 @@ public class UserDTO {
     }
 
     public String getPath() {
-        return file == null ? PATH : PATH  + file.getOriginalFilename();
+        return file == null ? path : path + file.getOriginalFilename();
     }
 
 

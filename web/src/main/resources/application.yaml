@@ -17,6 +17,8 @@ server:
   port: 9000
 
 server_url: http://localhost:9000/image/upload
+
+image_path: ${IMAGE_PATH:/home/dmitry/IdeaProjects/Media/images/}
 ---
 spring:
   profiles: verification

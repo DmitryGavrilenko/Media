@@ -3,6 +3,7 @@ package com.computools.web.config;
 import com.computools.audit.config.AuditConfig;
 import com.computools.config.ServiceConfig;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -21,4 +22,5 @@ public class AppConfig {
     public ModelMapper modelMapper(){
         return new ModelMapper();
     }
+
 }

@@ -5,10 +5,10 @@ import com.computools.audit.dao.UserRepository;
 import com.computools.audit.model.Image;
 import com.computools.audit.model.User;
 import com.computools.dto.UserDTO;
-import com.computools.path.Path;
 import exception.NotFoundException;
 import message.UserMessage;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -22,10 +22,14 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 
     private ImageServiceImpl imageService;
 
-    public UserServiceImpl(UserRepository userRepository, ImageServiceImpl imageService, ModelMapper modelMapper){
+    private final String path;
+
+    public UserServiceImpl(UserRepository userRepository, ImageServiceImpl imageService
+            , ModelMapper modelMapper, @Value("${image_path}") String path){
         this.userRepository = userRepository;
         this.imageService = imageService;
         this.modelMapper = modelMapper;
+        this.path = path;
         super.setJpaRepository(userRepository);
     }
     @Override
@@ -51,7 +55,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
         if(user == null) throw new NotFoundException(UserMessage.NOT_FOUND.getMessage()
                 , HttpStatus.NOT_FOUND, HttpStatus.NOT_FOUND.toString());
         Image image = new Image();
-        image.setPath(Path.PATH.getPath() + userDTO.getFile().getOriginalFilename());
+        image.setPath(path + userDTO.getFile().getOriginalFilename());
         image.setUser(user);
         // TODO add additional logic to check image path imageService.pathAlreadyExists(Path.PATH.getPath() + userDTO.getFile().getOriginalFilename());
         imageService.saveEntity(image);
