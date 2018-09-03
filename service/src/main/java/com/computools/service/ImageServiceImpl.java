@@ -3,6 +3,7 @@ package com.computools.service;
 import com.computools.audit.dao.ImageRepository;
 import com.computools.audit.model.Image;
 import com.computools.dto.UserDTO;
+import com.computools.path.Path;
 import exception.NotFoundException;
 import exception.SaveFileException;
 import message.ImageMessage;
@@ -35,11 +36,11 @@ public class ImageServiceImpl extends BaseServiceImpl<Image> implements ImageSer
     public void saveImage(MultipartFile file) {
         String fileName = file.getOriginalFilename();
         try {
-            Files.copy((InputStream) file.getInputStream(), Paths.get("/home/user/IdeaProjects/Media/images/" + fileName));
+            Files.copy(file.getInputStream(), Paths.get(Path.PATH.getPath() + fileName));
         }catch(FileAlreadyExistsException e){
-//            throw new FileExistsException(ImageMessage.FILE_ALREADY_EXISTS.getMessage(), HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST.toString());
+//            do nothing if image already exist
         }catch (IOException e) {
-            imageRepository.delete(imageRepository.findByPath("images/" + file.getOriginalFilename()));
+            imageRepository.delete(imageRepository.findByPath(Path.PATH.getPath() + file.getOriginalFilename()));
             throw new SaveFileException(ImageMessage.FAILED_SAVE_FILE.getMessage()
                     , HttpStatus.INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR.toString());
         }
@@ -51,8 +52,7 @@ public class ImageServiceImpl extends BaseServiceImpl<Image> implements ImageSer
 
         Image image = modelMapper.map(userDTO, Image.class);
         imageRepository.save(image);
-        saveImage(userDTO.getFile()); // TODO look on path file expected ( "/home/user/IdeaProjects/Media/images/") but was ("images/lake.jpg)
-
+        saveImage(userDTO.getFile());
 //        try {
 //            Files.copy(userDTO.getFile().getInputStream(), Paths.get("images/" + userDTO.getFile().getOriginalFilename()));
 //        } catch (Exception e) {
@@ -77,7 +77,7 @@ public class ImageServiceImpl extends BaseServiceImpl<Image> implements ImageSer
     public InputStreamResource getImageStreamResource(String name) {
 
         InputStreamResource image = null;
-        File file = new File("/home/user/IdeaProjects/Media/images/" + name);
+        File file = new File(Path.PATH.getPath() + name);
 
         try {
             FileInputStream fileInputStream = new FileInputStream(file);
@@ -88,6 +88,14 @@ public class ImageServiceImpl extends BaseServiceImpl<Image> implements ImageSer
         }
 
         return image;
+    }
+
+    @Override
+    public boolean pathAlreadyExists() {
+        Image image = imageRepository.findByPath(Path.PATH.getPath());
+        if(image.getPath().equals(Path.PATH.getPath()))
+            return true;
+        return false;
     }
 
 

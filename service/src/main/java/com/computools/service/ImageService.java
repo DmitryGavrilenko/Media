@@ -12,5 +12,7 @@ public interface ImageService {
 
     InputStreamResource getImageStreamResource(String name);
 
+    boolean pathAlreadyExists();
+
 
 }

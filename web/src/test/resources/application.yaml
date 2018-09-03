@@ -12,10 +12,7 @@ spring:
         jdbc:
           lob.non_contextual_creation: true
   profiles:
-    active: test
-  h2:
-    console:
-      enabled: true
+    active: ${profile:test}
 server:
   port: 9000
 
@@ -47,5 +44,5 @@ spring:
     url: jdbc:postgresql://localhost:5432/imagestest
     username: root
     password: root
-  flyway:
-    enabled: false
+server:
+  port: 9001
