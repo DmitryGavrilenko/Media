@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/images
+    url: ${url:jdbc:postgresql://localhost:5432/images}
     driver-class-name: org.postgresql.Driver
     hikari:
       maximum-pool-size: 8
@@ -13,6 +13,9 @@ spring:
           lob.non_contextual_creation: true
   profiles:
     active: test
+  h2:
+    console:
+      enabled: true
 server:
   port: 9000
 
@@ -40,7 +43,9 @@ spring:
 ---
 spring:
   profiles: test
-  url: jdbc:postgresql://localhost:5432/imagestest
   datasource:
+    url: jdbc:postgresql://localhost:5432/imagestest
     username: root
     password: root
+  flyway:
+    enabled: false

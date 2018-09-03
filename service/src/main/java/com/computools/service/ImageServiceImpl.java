@@ -1,15 +1,10 @@
 package com.computools.service;
 
 import com.computools.audit.dao.ImageRepository;
-import com.computools.audit.dao.UserRepository;
 import com.computools.audit.model.Image;
-import com.computools.audit.model.User;
 import com.computools.dto.UserDTO;
-import com.sun.nio.zipfs.ZipPath;
-import exception.FileExistsException;
 import exception.NotFoundException;
 import exception.SaveFileException;
-import jdk.internal.util.xml.impl.Input;
 import message.ImageMessage;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @Service

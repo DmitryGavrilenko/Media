@@ -3,7 +3,6 @@ import com.computools.audit.model.Image;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;

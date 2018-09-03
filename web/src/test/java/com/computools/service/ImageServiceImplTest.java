@@ -1,13 +1,9 @@
 package com.computools.service;
 
-import com.computools.audit.dao.ImageRepository;
-import com.computools.audit.model.Image;
 import com.computools.dto.UserDTO;
 import config.TestConfig;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.InputStreamResource;
@@ -22,7 +18,7 @@ import java.io.InputStream;
 import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = TestConfig.class)
+//@SpringBootTest(classes = TestConfig.class)
 public class ImageServiceImplTest {
 
     private final String PATH = "/home/user/IdeaProjects/Media/images/";
@@ -34,10 +30,8 @@ public class ImageServiceImplTest {
     @Autowired
     private MultipartFile multipartFile;
 
-    @Autowired
-    private ImageRepository imageRepository;
     @Test
-    public void saveImage() throws IOException {
+    public void saveImage() {
         File deleteFile = new File(PATH + FILE_NAME);
         deleteFile.delete(); // Delete image from folder for testing saveImage method
         imageService.saveImage(multipartFile);
@@ -51,9 +45,8 @@ public class ImageServiceImplTest {
         userDTO.setPath(PATH);
         userDTO.setFile(multipartFile);
         imageService.saveImage(userDTO);
-        Image image = imageRepository.findByPath(PATH);
-        assertNotNull(image);
-        assertEquals(image.getPath(), PATH);
+        File file = new File(PATH + multipartFile.getOriginalFilename());
+        assertTrue(file.exists());
     }
 
     @Test
