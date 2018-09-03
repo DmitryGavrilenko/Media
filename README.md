@@ -1,30 +1,29 @@
 Project structure
 -----------------
-````
-audit
+- audit
 ````
 Contains repositories and entities
 ````
-client
+- client
 ````
 Emulating clients
 ````
-data-saver
+- data-saver
 ````
 Saving received data
 ````
-handler
+- handler
 ````
 Error handler
 ````
-service
+- service
 ````
 Contains business logic
 ````
-web
+- web
 ````
 Contains controllers and tests
-
+````
 How to run
 ---------------
 Please add absolute path to "images" project folder in application file 
