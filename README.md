@@ -1,28 +1,12 @@
 Project structure
 -----------------
-- audit
 ````
-Contains repositories and entities
-````
-- client
-````
-Emulating clients
-````
-- data-saver
-````
-Saving received data
-````
-- handler
-````
-Error handler
-````
-- service
-````
-Contains business logic
-````
-- web
-````
-Contains controllers and tests
+audit
+client
+data-saver
+handler
+service
+web
 ````
 How to run
 ---------------
