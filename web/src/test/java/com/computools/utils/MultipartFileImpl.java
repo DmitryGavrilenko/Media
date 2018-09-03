@@ -1,4 +1,4 @@
-package utils;
+package com.computools.utils;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -10,12 +10,11 @@ public class MultipartFileImpl implements MultipartFile {
 
     private FileInputStream inputStream;
     private File file;
-    private String filename = "lake.jpg";
 
     public MultipartFileImpl() {
         ClassLoader classLoader = getClass().getClassLoader();
         try {
-            File file = new File("testimg/lake.jpg");
+            file = new File("testimg/lake.jpg");
             this.inputStream = new FileInputStream(file);
         }catch (NullPointerException e) {
 
@@ -49,7 +48,7 @@ public class MultipartFileImpl implements MultipartFile {
 
     @Override
     public byte[] getBytes() throws IOException {
-        return "test_images/lake1.jpg".getBytes();
+        return "testimg/lake.jpg".getBytes();
     }
 
     @Override

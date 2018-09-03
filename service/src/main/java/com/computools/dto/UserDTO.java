@@ -21,6 +21,15 @@ public class UserDTO {
 
     private String path;
 
+    public UserDTO(String name, String email, String password
+            , MultipartFile file, String path){
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.file = file;
+        this.path = path;
+    }
+
     public UserDTO() {
 
     }

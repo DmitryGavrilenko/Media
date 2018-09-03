@@ -5,7 +5,6 @@ import com.computools.audit.model.Image;
 import com.computools.dto.UserDTO;
 import com.computools.path.Path;
 import com.computools.web.config.TestConfig;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.multipart.MultipartFile;
+import com.computools.utils.MultipartFileImpl;
 
+import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -22,24 +23,23 @@ import java.io.InputStream;
 import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = TestConfig.class)
+@SpringBootTest(classes = {TestConfig.class})
 public class ImageServiceImplTest {
 
     private final String FILE_NAME = "lake.jpg";
+
+    private MultipartFile multipartFile;
 
     @Autowired
     private ImageService imageService;
 
     @Autowired
-    private MultipartFile multipartFile;
-
-    @Autowired
     private ImageRepository imageRepository;
 
-    @Before
-    public void deleteRow(){
-        Image image = imageRepository.findByPath(Path.PATH.getPath());
-        if (image != null) imageRepository.delete(image);
+    @PostConstruct
+    public void deleteRows(){
+        imageRepository.deleteAll();
+        multipartFile = new MultipartFileImpl();
     }
 
     @Test
@@ -52,7 +52,7 @@ public class ImageServiceImplTest {
     }
 
     @Test
-    public void saveImage1() { //TODO image saved twice
+    public void saveImage1() {
         UserDTO userDTO = new UserDTO();
         userDTO.setPath(Path.PATH.getPath());
         userDTO.setFile(multipartFile);
