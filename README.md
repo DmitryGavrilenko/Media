@@ -1,4 +1,3 @@
-How to run file
+What you need
 ---------------
-
-For full feature, please add absolute path to "images" project folder in application file 
+Please add absolute path to "images" project folder in application file 
